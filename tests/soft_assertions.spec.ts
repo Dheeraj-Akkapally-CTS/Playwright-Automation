@@ -4,7 +4,7 @@ test('User can use soft assertions', async ({ page }) => {
   await page.goto('https://opensource-demo.orangehrmlive.com/web/index.php/auth/login');
   //test will continue
   await expect.soft(
-    page.getByPlaceholder('Userame')
+    page.getByPlaceholder('Username')
   ).toBeVisible();
   await expect.soft(
     page.getByPlaceholder('Password')
