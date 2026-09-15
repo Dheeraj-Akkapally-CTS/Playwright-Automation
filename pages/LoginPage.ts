@@ -8,15 +8,13 @@ export class LoginPage {
   readonly errorMessage: Locator;
   constructor(page: Page) {
     this.page = page;
-    this.usernameInput = page.getByPlaceholder('Username').first();
-    this.passwordInput = page.getByPlaceholder('Password').first();
+    this.usernameInput = page.getByPlaceholder('Username');
+    this.passwordInput = page.getByPlaceholder('Password');
     this.loginButton = page.getByRole('button', { name: 'Login' });
     this.errorMessage = page.getByText('Invalid credentials');
   }
   async goto() {
-    await this.page.goto(
-      'https://opensource-demo.orangehrmlive.com/web/index.php/auth/login'
-    );
+    await this.page.goto('https://opensource-demo.orangehrmlive.com/web/index.php/auth/login');
   }
   async login(username: string, password: string) {
     await this.usernameInput.fill(username);
