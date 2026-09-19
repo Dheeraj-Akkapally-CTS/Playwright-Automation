@@ -1,4 +1,4 @@
-import { Page, Locator } from '@playwright/test';
+import { Page, Locator, expect } from '@playwright/test';
  
 export class EmployeePage {
   readonly page: Page;
@@ -18,11 +18,11 @@ export class EmployeePage {
   }
   async searchEmployee(employeeName: string) {
     await this.employeeNameInput.fill(employeeName);
-    await this.page.waitForTimeout(2000);
     const suggestion = this.page
       .locator('.oxd-autocomplete-dropdown')
       .getByText(employeeName, { exact: false })
       .first();
+    await expect(suggestion).toBeVisible({timeout:15000});
     await suggestion.click();
     await this.searchButton.click();
   }
