@@ -5,7 +5,7 @@ import path from 'path';
 const dataPath = path.join(
   process.cwd(),
   'test-data',
-  'loginData.json'
+  'LoginData.json'
 );
 const loginData = JSON.parse(fs.readFileSync(dataPath, 'utf-8'));
 for (const data of loginData) {
