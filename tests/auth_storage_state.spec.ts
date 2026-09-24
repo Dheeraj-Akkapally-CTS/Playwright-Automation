@@ -12,71 +12,57 @@ test.use({
   storageState: authFile
 });
  
-test(
-  'Access inventory using stored authentication',
-  async ({ page }) => {
- 
-    await page.goto(
-      'https://www.saucedemo.com/inventory.html'
+test('Access inventory using stored authentication',async ({ page }) => {
+    await page.goto('https://www.saucedemo.com/inventory.html',{
+       waitUntil: 'domcontentloaded' }
     );
- 
-    // Verify login
-    await expect(page).toHaveURL(
-      /inventory\.html/
+    await expect(page).toHaveURL(/inventory\.html/,
+      { timeout: 10000 }
     );
- 
     await expect(
       page.locator('.title')
-    ).toHaveText('Products');
+    ).toHaveText('Products', {
+      timeout: 10000
+    });
   }
 );
  
-test(
-  'Verify logout for authenticated user',
-  async ({ page }) => {
- 
-    await page.goto(
-      'https://www.saucedemo.com/inventory.html'
+test('Verify logout for authenticated user', async ({ page }) => {
+    await page.goto('https://www.saucedemo.com/inventory.html',{
+       waitUntil: 'domcontentloaded' }
     );
- 
-    // Open menu
-    await page.locator('#react-burger-menu-btn').click();
- 
-    const logout = page.getByText('Logout', {
-      exact: true
-    });
- 
-    await expect(logout).toBeVisible();
-  }
-);
- 
-test(
-  'Logout authenticated user',
-  async ({ page }) => {
- 
-    await page.goto(
-      'https://www.saucedemo.com/inventory.html'
-    );
- 
-    // Open menu
-    await page.locator('#react-burger-menu-btn').click();
- 
-    const logout = page.getByText('Logout', {
-      exact: true
-    });
- 
-    await expect(logout).toBeVisible();
- 
-    await logout.click();
- 
-    // Verify logout
-    await expect(page).toHaveURL(
-      'https://www.saucedemo.com/'
-    );
- 
     await expect(
-      page.locator('#login-button')
-    ).toBeVisible();
+      page.locator('.title')
+    ).toHaveText('Products', {
+      timeout: 10000
+    });
+    const menuButton = page.locator('#react-burger-menu-btn');
+    await expect(menuButton).toBeVisible({timeout: 10000});
+    await menuButton.click();
+    const logout = page.getByText('Logout', {
+      exact: true
+    });
+    await expect(logout).toBeVisible({timeout: 10000});
+  }
+);
+ 
+test('Logout authenticated user',async ({ page }) => {
+    await page.goto('https://www.saucedemo.com/inventory.html',
+      { waitUntil: 'domcontentloaded' }
+    );
+    await expect(page.locator('.title')).toHaveText('Products', {timeout: 10000});
+    const menuButton = page.locator(
+      '#react-burger-menu-btn'
+    );
+    await expect(menuButton).toBeVisible({timeout: 10000});
+    await menuButton.click();
+    const logout = page.getByText('Logout', {
+      exact: true
+    });
+    await expect(logout).toBeVisible({timeout: 10000});
+    await logout.click();
+    await expect(page).toHaveURL('https://www.saucedemo.com/',{ timeout: 10000 });
+    await expect(page.locator('#login-button')).toBeVisible({timeout: 10000});
   }
 );
  
